@@ -1,4 +1,3 @@
-
 # Redux saga
 ## what?
 Redux-Saga là một thư viện redux middleware, giúp quản lý những side effect trong ứng dụng redux trở nên đơn giản hơn. Bằng việc sử dụng tối đa tính năng Generators (function*) của ES6, nó cho phép ta viết async code nhìn giống như là synchronous
@@ -11,6 +10,11 @@ Redux có một số ràng buộc:
 - Reducers sẽ ko được sử dụng các hàm async vì không được thay đổi global state.
 Do đó để có thể giải quyết được các side effect này ta cần thực hiện nó ở middeware.
 ## How?
+- Khi view dispatch 1 action lên cho reducer xử lý thì trước tiên nó phải đi qua middleware Saga
+- Khi Saga nhận được action mà view dispatch lên thì nó sẽ bắt lấy action đấy để xử lý
+- Sau khi saga xử lý xong thì nó sẽ dùng hàm put để dispatch một action mới lên cho reducer (action này có thể kèm theo cả dữ liệu mà saga đã xử lý trước đó)
+- Bây giờ thì reducer mới nhận được action, sau đó reducer sẽ xử các action theo các điều kiện khác nhau(tùy theo action mà saga gửi lên thì reducer xử lý).
+
 Redux saga cung cấp các hàm helper effect, các hàm này sẽ trả về một effect object chứa đựng thông tin đặc biệt chỉ dẫn middeware của Redux có thể thực hiện tiếp các hành động khác. Các hàm helper effect sẽ được thực thi trong các generator function.
 - takeEvery() : thực thi và trả lại kết quả của mọi actions được gọi.
 - takeLastest() : có nghĩa là nếu chúng ta thực hiện một loạt các actions, nó sẽ chỉ thực thi và trả lại kết quả của của actions cuối cùng.

@@ -8,7 +8,7 @@ import {
   TableRow,
   TableCell,
   TableBody,
-  TablePagination, Typography
+  TablePagination, Typography, CircularProgress
 } from "@mui/material";
 import "./Users.css";
 import { useDispatch, useSelector } from "react-redux";
@@ -105,7 +105,7 @@ const dispatch = useDispatch();
             </TableRow>
           </TableHead>
           <TableBody>
-            { (data.length === undefined) ? <div> No data </div> : (
+            { (data.length === undefined) ? <CircularProgress /> : (
               data
               ?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               ?.map((user, index) => {
