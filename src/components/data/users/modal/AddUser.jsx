@@ -55,7 +55,6 @@ function AddUser(props) {
         }     
 
     })
-    dispatch(listUsers())
     toast.success('Create new user successfully!', {position: toast.POSITION.TOP_RIGHT})
       props.handleClose()
     } catch (error) {

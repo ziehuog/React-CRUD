@@ -12,11 +12,13 @@ import {
 } from "@mui/material";
 import "./Users.css";
 import { useDispatch, useSelector } from "react-redux";
-import {EditIcon,AddIcon, DeleteIcon} from "@mui/icons-material";
+import EditIcon  from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
 import {listUsers } from "../../redux/users/usersAction";
 import AddUser from "./modal/AddUser";
 import EditUser from "./modal/EditUser";
 import DeleteConfirmation from "./modal/DeleteConfirmation";
+import AddIcon from '@mui/icons-material/Add';
 
 
 function Users() {
