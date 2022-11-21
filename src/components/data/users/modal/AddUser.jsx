@@ -13,9 +13,10 @@ import {
   Radio,
   Select, InputLabel, MenuItem
 } from "@mui/material";
-import { useDispatch } from "react-redux";
-import { addUsers } from "../../../redux/users/usersAction";
 import { url } from "../../../../utils/http";
+import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { listUsers } from "../../../redux/users/usersAction";
 
 const style = {
   position: "absolute",
@@ -34,6 +35,7 @@ function AddUser(props) {
   const [gender, setGender] = useState("");
   const [status, setStatus] = useState("inactive");
 
+  const dispatch = useDispatch()
   useEffect(() => {
     setName('')
     setEmail('')
@@ -41,7 +43,6 @@ function AddUser(props) {
     setStatus('inactive')
 
   }, [props.open])
-  const dispatch = useDispatch();
 
 
   const btnAdd = async () => {
@@ -54,11 +55,11 @@ function AddUser(props) {
         }     
 
     })
-      console.log('OK')
+    dispatch(listUsers())
+    toast.success('Create new user successfully!', {position: toast.POSITION.TOP_RIGHT})
       props.handleClose()
     } catch (error) {
-      console.log(error)
-
+    toast.error('Have some mistakes, please try again!', {position: toast.POSITION.TOP_RIGHT})
     }
 
   }

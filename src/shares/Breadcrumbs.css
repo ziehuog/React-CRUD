@@ -1,0 +1,11 @@
+.breadcrumbs{
+    display: flex;
+    align-items: center;
+    height: 80px;
+    font-size: 20px;
+}
+.bc--link{
+    color: black;
+    padding: 10px;
+    font-weight: 600;
+}

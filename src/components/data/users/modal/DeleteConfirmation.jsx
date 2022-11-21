@@ -1,8 +1,8 @@
 import * as React from 'react';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import Modal from '@mui/material/Modal';
+import {Modal, Typography, Button, Box}  from '@mui/material';
+import { url } from '../../../../utils/http';
+import { toast } from 'react-toastify';
+import { useDispatch } from 'react-redux';
 
 const style = {
   position: 'absolute',
@@ -17,6 +17,26 @@ const style = {
 };
 
 export default function DeleteConfirmation(props) {
+  const dispatch = useDispatch();
+  const btnDelete = async () => {
+    console.log(props.id)
+    try {
+      await url.delete(`/users/${props.id}`, {
+        headers: {
+          'Accept':'application/json',
+          'Content-Type':'application/json',
+          'Authorization': 'Bearer 4d53d40da1b60e5a2ce2b7369afa1b9593e7923a8e78fce0cda10c6a7d6bc7d9'
+        }     
+
+    })
+
+    // dispatch(listUsers())
+    props.handleClose()
+    toast.success('Delete user successfully!', {position: toast.POSITION.TOP_RIGHT})
+    } catch (error) {
+      toast.error('Have some mistakes, please try again!', {position: toast.POSITION.TOP_RIGHT})
+    }
+  }
 
   return (
     <div>
@@ -33,10 +53,10 @@ export default function DeleteConfirmation(props) {
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
             Are you sure that you want to delete?
           </Typography>
-        </Box>
-        <div
+          <div
                 style={{
                   width: "100%",
+                  margin: "15px 0",
                   display: "flex",
                   justifyContent: "flex-end",
                 }}
@@ -46,9 +66,9 @@ export default function DeleteConfirmation(props) {
                   size="medium"
                   color="secondary"
                   sx={{ mx: 1 }}
-                  onClick={() => btnAdd()}
+                  onClick={() => btnDelete()}
                 >
-                  Add
+                  Delete
                 </Button>
                 <Button
                   variant="contained"
@@ -60,6 +80,7 @@ export default function DeleteConfirmation(props) {
                   Cancel
                 </Button>
               </div>
+        </Box>
       </Modal>
     </div>
   );

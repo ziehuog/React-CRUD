@@ -13,6 +13,8 @@ import {
   Radio,
   Select, InputLabel, MenuItem
 } from "@mui/material";
+import { url } from '../../../../utils/http';
+import { toast } from 'react-toastify';
 
 
 const style = {
@@ -41,6 +43,25 @@ function EditUser(props) {
   }, [props.user])
 
 
+  const btnUpdate = async () => {
+    console.log(props.user.id)
+    try {
+      await url.patch(`/users/${props.user.id}`, {name, email, gender, status}, {
+        headers: {
+          'Accept':'application/json',
+          'Content-Type':'application/json',
+          'Authorization': 'Bearer 4d53d40da1b60e5a2ce2b7369afa1b9593e7923a8e78fce0cda10c6a7d6bc7d9'
+        }     
+
+    })
+    toast.success('Update user successfully!', {position: toast.POSITION.TOP_RIGHT})
+    
+      props.handleClose()
+    } catch (error) {
+    toast.error('Have some mistakes, please try again!', {position: toast.POSITION.TOP_RIGHT})
+    }
+
+  }
 
   return ( 
     <>
@@ -144,8 +165,9 @@ function EditUser(props) {
                   size="medium"
                   color="secondary"
                   sx={{ mx: 1 }}
+                  onClick={() => btnUpdate()}
                 >
-                  Add
+                  Update
                 </Button>
                 <Button
                   variant="contained"
