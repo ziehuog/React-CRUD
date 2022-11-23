@@ -8,7 +8,7 @@ import {
   TableRow,
   TableCell,
   TableBody,
-  TablePagination, Typography, CircularProgress
+  TablePagination, Typography
 } from "@mui/material";
 import "./Users.css";
 import { useDispatch, useSelector } from "react-redux";
@@ -19,9 +19,26 @@ import AddUser from "./modal/AddUser";
 import EditUser from "./modal/EditUser";
 import DeleteConfirmation from "./modal/DeleteConfirmation";
 import AddIcon from '@mui/icons-material/Add';
-
+import { makeStyles } from '@mui/styles';
 
 function Users() {
+
+  const useStyles = makeStyles({
+    padding: {
+      paddingLeft: 0,
+      paddingRight: 0,
+    },
+    active: {
+      border: '1px solid green',
+    },
+    inactive: {
+      border: '1px solid red',
+    }
+
+  });
+
+  const classes = useStyles();
+
   //display
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -52,7 +69,6 @@ function Users() {
     setOpenUpdate(true)
   };
 
-
 // get data
 const data = useSelector((state) => state.users);
 
@@ -62,7 +78,6 @@ const dispatch = useDispatch();
 
   },[])
 
-  console.log(data)
   //pagination
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -89,13 +104,12 @@ const dispatch = useDispatch();
     </div>
     </Container>
     </div>
-    <Container fixed>
+    <Container fixed className={classes.padding} style={{padding: 0}}>
       <AddUser open={openCreate} handleClose={handleCloseCreate}/>
       <EditUser open={openUpdate} handleClose={handleCloseUpdate}  user={user}/>
       <DeleteConfirmation open={openDelete} handleClose={handleCloseDelete}  id={id}/>
 
-      {/* <div>breadcrumbs</div> */}
-      <TableContainer>
+      <TableContainer >
         <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
           <TableHead>
             <TableRow>
@@ -105,7 +119,7 @@ const dispatch = useDispatch();
             </TableRow>
           </TableHead>
           <TableBody>
-            { (data.length === undefined) ? <CircularProgress /> : (
+            { ( data && data.length === undefined) ? <div> No data </div> : (
               data
               ?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               ?.map((user, index) => {
@@ -117,7 +131,10 @@ const dispatch = useDispatch();
                     <TableCell align="center">{user.name}</TableCell>
                     <TableCell align="center">{user.email}</TableCell>
                     <TableCell align="center">{user.gender}</TableCell>
-                    <TableCell align="center">{user.status}</TableCell>
+                    <TableCell align="center" >
+                      <Typography className={user.status === 'active' ? classes.active : classes.inactive}>{user.status}</Typography>
+                      
+                      </TableCell>
                     <TableCell align="center">
                       <Button
                         variant="contained"
@@ -146,7 +163,7 @@ const dispatch = useDispatch();
         </Table>
       </TableContainer>
       <TablePagination
-        rowsPerPageOptions={[10, 10, 25]}
+        rowsPerPageOptions={[5, 10, 25]}
         component="div"
         count={data.length ? data.length : 0}
         rowsPerPage={rowsPerPage}

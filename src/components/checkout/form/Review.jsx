@@ -1,6 +1,16 @@
 import React from "react";
+import { makeStyles } from '@mui/styles';
 import { ListItem, ListItemText, Typography, Grid } from "@mui/material";
 function Review() {
+
+  const useStyles = makeStyles({
+    root: {
+      color: 'red',
+    },
+  });
+
+  const classes = useStyles();
+
   const products = [
     {
       name: "Product 1",
@@ -38,7 +48,7 @@ function Review() {
     <>
       {products.map((product) => (
         <ListItem key={product.name} sx={{ py: 1, px: 0 }}>
-          <ListItemText primary={product.name} secondary={product.desc} />
+          <ListItemText primary={product.name} className={classes.root} secondary={product.desc} />
           <ListItemText style={{ display: "flex", justifyContent: "flex-end" }}>
             {product.price}
           </ListItemText>

@@ -2,7 +2,8 @@ import * as React from 'react';
 import {Modal, Typography, Button, Box}  from '@mui/material';
 import { url } from '../../../../utils/http';
 import { toast } from 'react-toastify';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { deleteUser } from '../../../redux/users/usersAction';
 
 const style = {
   position: 'absolute',
@@ -18,6 +19,7 @@ const style = {
 
 export default function DeleteConfirmation(props) {
   const dispatch = useDispatch();
+  const data = useSelector((state) => state.users);
   const btnDelete = async () => {
     console.log(props.id)
     try {
@@ -29,8 +31,10 @@ export default function DeleteConfirmation(props) {
         }     
 
     })
+    let index = data.findIndex(user => user.id === props.id)
+      data.splice(index, 1)
+    dispatch(deleteUser([...data]))
 
-    // dispatch(listUsers())
     props.handleClose()
     toast.success('Delete user successfully!', {position: toast.POSITION.TOP_RIGHT})
     } catch (error) {

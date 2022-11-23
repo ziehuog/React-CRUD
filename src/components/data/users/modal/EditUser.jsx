@@ -15,6 +15,8 @@ import {
 } from "@mui/material";
 import { url } from '../../../../utils/http';
 import { toast } from 'react-toastify';
+import { useDispatch, useSelector } from 'react-redux';
+import { updateUser } from '../../../redux/users/usersAction';
 
 
 const style = {
@@ -43,10 +45,13 @@ function EditUser(props) {
   }, [props.user])
 
 
+  const data = useSelector((state) => state.users);
+  const dispatch = useDispatch()
   const btnUpdate = async () => {
+
     console.log(props.user.id)
     try {
-      await url.patch(`/users/${props.user.id}`, {name, email, gender, status}, {
+      let modifiedUser = await url.patch(`/users/${props.user.id}`, {name, email, gender, status}, {
         headers: {
           'Accept':'application/json',
           'Content-Type':'application/json',
@@ -54,6 +59,10 @@ function EditUser(props) {
         }     
 
     })
+     let index = data.findIndex(user => user.id === props.user.id)
+      data.splice(index, 1)
+
+    dispatch(updateUser([modifiedUser.data, ...data]))
     toast.success('Update user successfully!', {position: toast.POSITION.TOP_RIGHT})
     
       props.handleClose()

@@ -15,8 +15,8 @@ import {
 } from "@mui/material";
 import { url } from "../../../../utils/http";
 import { toast } from "react-toastify";
-import { useDispatch } from "react-redux";
-import { listUsers } from "../../../redux/users/usersAction";
+import { useDispatch, useSelector } from "react-redux";
+import { addUser, listUsers } from "../../../redux/users/usersAction";
 
 const style = {
   position: "absolute",
@@ -30,12 +30,14 @@ const style = {
   p: 4,
 };
 function AddUser(props) {
+  const data = useSelector((state) => state.users);
+  const dispatch = useDispatch()
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [gender, setGender] = useState("");
   const [status, setStatus] = useState("inactive");
 
-  const dispatch = useDispatch()
   useEffect(() => {
     setName('')
     setEmail('')
@@ -47,7 +49,7 @@ function AddUser(props) {
 
   const btnAdd = async () => {
     try {
-      await url.post('/users', {name, email, gender, status}, {
+      let newUser = await url.post('/users', {name, email, gender, status}, {
         headers: {
           'Accept':'application/json',
           'Content-Type':'application/json',
@@ -55,6 +57,7 @@ function AddUser(props) {
         }     
 
     })
+    dispatch(addUser([newUser.data, ...data]))
     toast.success('Create new user successfully!', {position: toast.POSITION.TOP_RIGHT})
       props.handleClose()
     } catch (error) {
